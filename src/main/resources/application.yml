@@ -23,7 +23,8 @@ server:
 
 lta:
   api:
-    base-url: ${LTA_API_BASE_URL:https://datamall2.mytransport.sg/ltaodataservice}
+    # v3 is the current LTA DataMall Bus Arrival endpoint; BusArrivalv2 is deprecated (404s).
+    base-url: ${LTA_API_BASE_URL:https://datamall2.mytransport.sg/ltaodataservice/v3}
     # Required in production; requests fail fast with a clear error when missing.
     account-key: ${LTA_ACCOUNT_KEY:}
     bus-stop-code: ${LTA_BUS_STOP_CODE:83139}

@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
-"""Minimal mock of the LTA DataMall BusArrivalv2 API for local smoke tests."""
+"""Minimal mock of the LTA DataMall Bus Arrival API (v3) for local smoke tests.
+
+Mirrors real LTA behavior:
+- /ltaodataservice/v3/BusArrival serves the payload when AccountKey is valid
+- missing AccountKey -> 404, invalid AccountKey -> 401
+"""
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+
+VALID_KEY = "TESTKEY"
 
 PAYLOAD = {
     "Services": [
@@ -18,8 +25,17 @@ PAYLOAD = {
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if "BusStopCode=83139" not in self.path:
+        key = self.headers.get("AccountKey", "")
+        if "/ltaodataservice/v3/BusArrival" not in self.path or "BusStopCode=83139" not in self.path:
             self.send_response(404)
+            self.end_headers()
+            return
+        if not key:
+            self.send_response(404)  # LTA returns 404 for a missing key
+            self.end_headers()
+            return
+        if key != VALID_KEY:
+            self.send_response(401)  # LTA returns 401 for an invalid key
             self.end_headers()
             return
         body = json.dumps(PAYLOAD).encode()

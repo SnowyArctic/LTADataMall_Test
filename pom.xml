@@ -15,7 +15,7 @@
   <artifactId>transit-feed</artifactId>
   <version>1.0.0</version>
   <name>transit-feed</name>
-  <description>Spring Boot backend proxying the LTA DataMall BusArrivalv2 API for bus stop 83139, with PostgreSQL persistence</description>
+  <description>Spring Boot backend proxying the LTA DataMall Bus Arrival API (v3) for bus stop 83139, with PostgreSQL persistence</description>
 
   <properties>
     <java.version>17</java.version>

@@ -14,8 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * GET /api/transit-feed — server-side fetch of the LTA DataMall BusArrivalv2
- * API for bus stop 83139, returning only the incoming arrival timestamps.
+ * GET /api/transit-feed — server-side fetch of the LTA DataMall Bus Arrival
+ * API (v3) for bus stop 83139, returning only the incoming arrival timestamps.
  */
 @RestController
 @RequestMapping("/api")
@@ -45,7 +45,7 @@ public class TransitFeedController {
             body.put("arrivals", result.arrivals());
             return ResponseEntity.ok(body);
         } catch (LtaArrivalService.LtaApiException e) {
-            return error(HttpStatus.BAD_GATEWAY, e.getMessage());
+            return error(HttpStatus.valueOf(e.getStatus().value()), e.getMessage());
         } catch (Exception e) {
             return error(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error fetching the transit feed");
         }
