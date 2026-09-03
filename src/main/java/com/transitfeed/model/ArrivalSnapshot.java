@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 
 /**
  * A persisted snapshot of incoming bus arrivals for a bus stop,
- * as returned by the LTA DataMall BusArrivalv2 API.
+ * as returned by the LTA DataMall Bus Arrival API (v3).
  */
 @Entity
 @Table(name = "arrival_snapshots", indexes = {

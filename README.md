@@ -1,13 +1,17 @@
-# Spring Boot backend proxying the **LTA DataMall BusArrivalv2 API** for bus stop **83139**, with **PostgreSQL** persistence.
+# Spring Boot backend proxying the **LTA DataMall Bus Arrival API (v3)** for bus stop **83139**, with **PostgreSQL** persistence.
 
 ## Endpoint
 
 ### `GET /api/transit-feed`
 
-Server-side fetch of the LTA DataMall BusArrivalv2 API using the `AccountKey`
-header. The JSON payload is parsed and only the incoming bus arrival
-timestamps are returned (flattened across `NextBus`–`NextBus3`, sorted by
-arrival time). Every fetch is persisted to the database.
+Server-side fetch of the LTA DataMall Bus Arrival API
+(`https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=83139`)
+using the `AccountKey` header. The JSON payload is parsed and only the
+incoming bus arrival timestamps are returned (flattened across `NextBus`–`NextBus3`,
+sorted by arrival time). Every fetch is persisted to the database.
+
+> Note: LTA deprecated the old `/BusArrivalv2` path (it now returns 404);
+> v3 is the current endpoint.
 
 **Example response:**
 
@@ -63,6 +67,9 @@ Readiness probe: `{"status":"ok","busStopCode":"83139"}`
 ## Notes
 
 - Without `LTA_ACCOUNT_KEY`, `/api/transit-feed` returns `500` with a clear error.
+- LTA rejects missing keys with `404` and invalid keys with `401`; both are
+  surfaced as `502` with a message telling you to check the key. Connection
+  failures to LTA also return `502`.
 - The schema is auto-created (`ddl-auto: update`) — a `arrival_snapshots` table
   stores one row per incoming bus with its fetched timestamp; rows older than
   the retention window are pruned on each fetch.

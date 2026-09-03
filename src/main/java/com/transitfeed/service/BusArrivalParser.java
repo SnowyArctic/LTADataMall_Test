@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Parses the LTA DataMall BusArrivalv2 JSON payload and flattens it into
+ * Parses the LTA DataMall Bus Arrival JSON payload (v3) and flattens it into
  * incoming arrivals (up to three per service: NextBus..NextBus3).
  */
 @Service
